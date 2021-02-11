@@ -26,4 +26,17 @@ class KafkaConsumer {
                 .onErrorContinue((throwable, o) -> System.out.println("Error: " + throwable.getClass()))
                 .subscribe();
     }
+
+    void acceptWithoutOnErrorContinue(Flux<String> input) {
+        input.doOnNext(message -> System.out.println("Received message: " + message))
+                .flatMap(message -> Mono.just(message)
+                        .map(Integer::valueOf)
+                        .doOnSuccess(x -> System.out.println("Processed successfully: " + message))
+                        .onErrorResume(throwable -> {
+                            System.out.println("Error: " + throwable.getClass());
+                            return Mono.empty();
+                        })
+                )
+                .subscribe();
+    }
 }

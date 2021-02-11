@@ -10,12 +10,17 @@ class KafkaConsumerTest {
     private final KafkaConsumer kafkaConsumer = new KafkaConsumer();
 
     @Test
-    void testMap() {
+    void testWithMap() {
         kafkaConsumer.acceptWithMap(Flux.fromStream(Stream.of("1", "2", "three", "4", "5")));
     }
 
     @Test
-    void testFlatMap() {
+    void testWithFlatMap() {
         kafkaConsumer.acceptWithFlatMap(Flux.fromStream(Stream.of("1", "2", "three", "4", "5")));
+    }
+
+    @Test
+    void testWithoutOnErrorContinue() {
+        kafkaConsumer.acceptWithoutOnErrorContinue(Flux.fromStream(Stream.of("1", "2", "three", "4", "5")));
     }
 }
